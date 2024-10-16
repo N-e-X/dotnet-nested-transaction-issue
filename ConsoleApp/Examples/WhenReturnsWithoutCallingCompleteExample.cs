@@ -40,7 +40,10 @@ public sealed class WhenReturnsWithoutCallingCompleteExample : IExample
 
         // work with db omitted for brevity
 
-        return; // forces innerScope to call Dispose() in hidden finally block. This causes the ambient transaction to be aborted
+        // in a real-world scenario innerScope.Complete() more likely is present in the end of the method but might be missed in 'if' block
+        var someCondition = true;
+        if (someCondition)
+            return; // forces innerScope to call Dispose() in hidden 'finally' block. This causes the ambient transaction to be aborted
 
         innerScope.Complete(); // never invoked
     }

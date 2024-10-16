@@ -36,7 +36,7 @@ public sealed class WhenThrowsExceptionExample : IExample
             _db.Errors.Add(new() { Description = ex.Message });
             _db.SaveChanges(); // throws the exception that transaction has been already aborted
         }
-        outerScope.Complete(); // never invoked since the exception is thrown in catch block
+        outerScope.Complete(); // never invoked since the exception is thrown in 'catch' block
     }
 
     public void Inner()
@@ -46,7 +46,7 @@ public sealed class WhenThrowsExceptionExample : IExample
 
         // work with db omitted for brevity
 
-        throw new Exception("Test message"); // forces innerScope to call Dispose() in hidden finally block. This causes the ambient transaction to be aborted
+        throw new Exception("Some exception that was thrown in a workflow"); // forces innerScope to call Dispose() in hidden 'finally' block. This causes the ambient transaction to be aborted
 
         innerScope.Complete(); // never invoked
     }
